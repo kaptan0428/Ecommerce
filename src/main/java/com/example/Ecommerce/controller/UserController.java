@@ -16,7 +16,32 @@ public class UserController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.OK)
-    public User save(@RequestBody User user){
-        return userService.save(user);
+    public User saveUser(@RequestBody User user){
+        return userService.saveUserService(user);
     }
+
+    @GetMapping("/finduser/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public User findUser(@PathVariable int id){
+        return userService.findUserService(id);
+    }
+
+    @DeleteMapping("/deleteuser/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteUser(@PathVariable int id){
+        userService.deleteUserService(id);
+    }
+
+    @PostMapping("/updateuser/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public User updateUser(@RequestBody User user, @PathVariable int id){
+        return userService.updateUserService(user, id);
+    }
+
+    @PostMapping("/existbyemail")
+    public boolean existByEmail(@RequestBody User user){
+        String email = user.getEmail();
+        return userService.findByEmail(email);
+    }
+
 }
