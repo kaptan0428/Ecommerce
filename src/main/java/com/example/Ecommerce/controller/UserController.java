@@ -44,4 +44,9 @@ public class UserController {
         return userService.findByEmail(email);
     }
 
+    @PostMapping("/login")
+    public User userLogin(@RequestBody User user){
+        return userService.userLoginService(user.getEmail(), user.getPassword());
+    }
+
 }
