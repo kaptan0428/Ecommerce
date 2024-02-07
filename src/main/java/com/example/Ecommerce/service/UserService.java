@@ -13,18 +13,18 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    // Create
+    // Create user
     public User saveUserService(User user){
         return userRepository.save(user);
     }
 
-    // Read
+    // Read user by user ID
     public User findUserService(int id){
         Optional<User> userRes = userRepository.findById(id);
         return userRes.orElse(null);
     }
 
-    // Delete
+    // Delete user by user ID
     public void deleteUserService(int id){
         Optional<User> userRes = userRepository.findById(id);
         if(userRes.isEmpty()){
@@ -33,7 +33,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    //update
+    //update user
     public User updateUserService(User user, int id){
         Optional<User> userRes = userRepository.findById(id);
         if(!userRes.isEmpty()){
