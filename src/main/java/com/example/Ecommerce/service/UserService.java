@@ -10,8 +10,15 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+
+    private UserRepository userRepository;
+    private TokenService tokenService;
+
     @Autowired
-    UserRepository userRepository;
+    public UserService(UserRepository userRepository, TokenService tokenService) {
+        this.userRepository = userRepository;
+        this.tokenService = tokenService;
+    }
 
     // Create user
     public User saveUserService(User user){
@@ -63,11 +70,23 @@ public class UserService {
 
 
 
-    public User userLoginService(String email, String password){
-        if(!findByEmail(email)) return null;
+    public String userLoginService(String email, String password){
+        if(!findByEmail(email))
+            return "{" +
+                "\"message\":"+"Authentication Failed\",\n"+
+                "}";
 
         User user = userRepository.getUserByUserName(email);
-        if(!user.getPassword().equals(password)) return null;
-        return user;
+        if(!user.getPassword().equals(password))
+            return "{" +
+                "\"message\":"+"Authentication Failed\",\n"+
+                "}";
+
+        return "{" +
+                "\"message\":"+"Successfully Logged in\",\n"+
+                "\"data\": "+user+",\n"+
+                "\"Email: " + user.getEmail() + "\n"+
+                "\"token: " + tokenService.createTokenFunction(user.getId()) +
+                "}";
     }
 }

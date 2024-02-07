@@ -12,15 +12,16 @@ import java.util.Date;
 
 @Service
 public class TokenService {
-    public static final String token_secret = "jdsalfahfdvnvklfdakdfakjdsg";
+    public static final String token_sign = "jdsalfahfdvnvklfdakdfakjdsg";
     public String createTokenFunction(Integer id){
         try{
-            Algorithm algorithmObject = Algorithm.HMAC256(token_secret);
+            Algorithm algorithmObject = Algorithm.HMAC256(token_sign);
             String token = JWT.
                     create().
                     withClaim("userId", id.toString()).
                     withClaim("createdAt", new Date()).
                     sign(algorithmObject);
+            return token;
         } catch (UnsupportedEncodingException | JWTCreationException e) {
             e.printStackTrace();
         }
@@ -29,7 +30,8 @@ public class TokenService {
 
     public String getUserIdToken(String token){
         try{
-            Algorithm algorithmObject = Algorithm.HMAC256(token_secret);
+            Algorithm algorithmObject = Algorithm.HMAC256(token_sign);
+            // what are we verifying here ----> verifying signature
             JWTVerifier jwtVerifier = JWT.
                     require(algorithmObject).
                     build();
